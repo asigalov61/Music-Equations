@@ -6,6 +6,8 @@
 
 ## Hear the muse of mathematics!!!
 
+## Candidate #1: sklearn StandardScaler
+
 [![Open In Colab][colab-badge]][colab-notebook]
 
 [colab-notebook]: <https://colab.research.google.com/github/asigalov61/Music-Equations/blob/main/Music_Equations.ipynb>
