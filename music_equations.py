@@ -33,6 +33,7 @@ Original file is located at
 # %cd /content/tegridy-tools/tegridy-tools
 import os
 import TMIDIX
+from sklearn.externals.joblib import dump, load
 from sklearn.preprocessing import StandardScaler, RobustScaler
 import math
 import numpy as np
@@ -68,10 +69,20 @@ scaler = scaler.fit(sts2)
 print('Mean: %f, StandardDeviation: %f' % (scaler.mean_, math.sqrt(scaler.var_)))
 # standardization the dataset and print the first 5 rows
 sts_norm = scaler.transform(sts2)
-sts_ints = sts_norm.astype(int, casting='unsafe')
+sts_ints = []
+for d in sts_norm.tolist():
+  #print(d * 10000)
+  #z = 5
+  #y = round(d[0], math.ceil(-math.log10(d[0])) + z)
+  #sts_ints.append(y)
+  sts_ints.append(abs(math.ceil(d[0])))
 for i in range(15):
-	print(sts_ints[i])
+	  print(sts_ints[i])
+
+dump(scaler, '/content/sts_scaler.bin', compress=True)
+
 print('=====')
+
 # prepare data for standardization
 durs1 = np.asarray(durs)
 durs2 = durs1.reshape((len(durs1), 1))
@@ -81,26 +92,47 @@ scaler1 = scaler1.fit(durs2)
 print('Mean: %f, StandardDeviation: %f' % (scaler1.mean_, math.sqrt(scaler1.var_)))
 # standardization the dataset and print the first 5 rows
 durs_norm = scaler1.transform(durs2)
-durs_ints = durs_norm.astype(int, casting='unsafe')
+
+
+durs_ints = []
+for d in durs_norm:
+  #print(d * 10000)
+  #z = 5
+  #y = round(d, math.ceil(-math.log10(d)) + z)
+  #durs_ints.append(y)
+  durs_ints.append(abs(math.ceil(d[0])))
 for i in range(15):
-	print(durs_ints[i])
+	  print(durs_ints[i])
+dump(scaler1, '/content/sts_scaler1.bin', compress=True)
 
 #@title Decode back to MIDI
+floats_vs_ints = False #@param {type:"boolean"}
 out_sts = []
-z = sts_ints.astype(float)
+
+if floats_vs_ints:
+  z = sts_norm
+else:
+  z = np.asarray(sts_ints, dtype=float) # / 20000
+
 # inverse transform and print the first 5 rows
 inversed = scaler.inverse_transform(z)
 for i in range(len(z)):
   #print(int(inversed[i]))
-  out_sts.append(int(inversed[i]))
+  out_sts.append(math.ceil(inversed[i]))
+
 print('========')
+
 out_durs = []
-z = durs_ints.astype(float)
+if floats_vs_ints:
+  z = durs_norm
+else:
+  z = np.asarray(durs_ints, dtype=float) #/ 20000
+
 # inverse transform and print the first 5 rows
 inversed = scaler1.inverse_transform(z)
 for i in range(len(z)):
   #print(int(inversed[i]))
-  out_durs.append(int(inversed[i]))
+  out_durs.append(math.ceil(inversed[i]))
 
 
 song = []
