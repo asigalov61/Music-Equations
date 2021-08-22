@@ -8,7 +8,7 @@
 
 [![Open In Colab][colab-badge]][colab-notebook]
 
-[colab-notebook]: <https://colab.research.google.com/github/asigalov61/Music-Equations/main/Music_Equations.ipynb>
+[colab-notebook]: <https://colab.research.google.com/github/asigalov61/Music-Equations/blob/main/Music_Equations.ipynb>
 [colab-badge]: <https://colab.research.google.com/assets/colab-badge.svg>
 
 ***
