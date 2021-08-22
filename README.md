@@ -6,7 +6,7 @@
 
 ## Hear the muse of mathematics!!!
 
-## Candidate #1: sklearn StandardScaler
+### Candidate #1: sklearn StandardScaler
 
 [![Open In Colab][colab-badge]][colab-notebook]
 
