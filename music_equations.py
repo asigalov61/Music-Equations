@@ -26,14 +26,14 @@ Original file is located at
 #@title Install dependencies
 # %cd /content/
 !git clone https://github.com/asigalov61/tegridy-tools
-!pip install sklearn
+!pip install -U scikit-learn
 
 # Commented out IPython magic to ensure Python compatibility.
 #@title Import modules
 # %cd /content/tegridy-tools/tegridy-tools
 import os
 import TMIDIX
-from sklearn.externals.joblib import dump, load
+from joblib import dump, load
 from sklearn.preprocessing import StandardScaler, RobustScaler
 import math
 import numpy as np
@@ -107,13 +107,13 @@ for i in range(15):
 dump(scaler1, '/content/sts_scaler1.bin', compress=True)
 
 #@title Decode back to MIDI
-floats_vs_ints = False #@param {type:"boolean"}
+floats_vs_ints = True #@param {type:"boolean"}
 out_sts = []
 
 if floats_vs_ints:
   z = sts_norm
 else:
-  z = np.asarray(sts_ints, dtype=float) # / 20000
+  z = np.asarray(sts_ints, dtype=float).reshape(-1, 1) # / 20000
 
 # inverse transform and print the first 5 rows
 inversed = scaler.inverse_transform(z)
@@ -127,7 +127,7 @@ out_durs = []
 if floats_vs_ints:
   z = durs_norm
 else:
-  z = np.asarray(durs_ints, dtype=float) #/ 20000
+  z = np.asarray(durs_ints, dtype=float).reshape(-1, 1) #/ 20000
 
 # inverse transform and print the first 5 rows
 inversed = scaler1.inverse_transform(z)
